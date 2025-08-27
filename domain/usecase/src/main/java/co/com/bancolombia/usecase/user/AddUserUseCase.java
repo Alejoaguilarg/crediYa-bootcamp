@@ -3,7 +3,7 @@ package co.com.bancolombia.usecase.user;
 import co.com.bancolombia.model.ex.BusinessRuleException;
 import co.com.bancolombia.model.user.User;
 import co.com.bancolombia.model.user.gateways.IUserRepository;
-import co.com.bancolombia.usecase.user.command.CreateUserCommand;
+import co.com.bancolombia.usecase.user.command.AddUserCommand;
 import reactor.core.publisher.Mono;
 
 public class AddUserUseCase {
@@ -14,7 +14,7 @@ public class AddUserUseCase {
         this.userRepository = userRepository;
     }
 
-    public Mono<User> execute(final CreateUserCommand command) {
+    public Mono<User> execute(final AddUserCommand command) {
         return userRepository.findByEmail(command.email())
                 .flatMap(existingUser ->
                         Mono.<User>error(new BusinessRuleException("409", "Email is already registered.")))

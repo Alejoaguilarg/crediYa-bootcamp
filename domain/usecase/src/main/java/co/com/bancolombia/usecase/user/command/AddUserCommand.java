@@ -2,7 +2,7 @@ package co.com.bancolombia.usecase.user.command;
 
 import java.time.LocalDate;
 
-public record CreateUserCommand(
+public record AddUserCommand(
         String name,
         String lastName,
         String email,

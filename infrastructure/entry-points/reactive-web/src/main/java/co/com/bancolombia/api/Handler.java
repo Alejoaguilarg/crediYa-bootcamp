@@ -2,9 +2,8 @@ package co.com.bancolombia.api;
 
 import co.com.bancolombia.api.dto.request.CreateUserRequestDTO;
 import co.com.bancolombia.api.dto.response.UserResponseDto;
-import co.com.bancolombia.model.user.User;
 import co.com.bancolombia.usecase.user.AddUserUseCase;
-import co.com.bancolombia.usecase.user.command.CreateUserCommand;
+import co.com.bancolombia.usecase.user.command.AddUserCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,7 @@ public class Handler {
     public Mono<ServerResponse> saveUser(final ServerRequest request) {
         return request
                 .bodyToMono(CreateUserRequestDTO.class)
-                .map(userDto -> new CreateUserCommand(
+                .map(userDto -> new AddUserCommand(
                         userDto.name(),
                         userDto.lastName(),
                         userDto.email(),
