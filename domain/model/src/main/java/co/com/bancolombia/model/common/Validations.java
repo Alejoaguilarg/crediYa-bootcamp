@@ -1,6 +1,6 @@
 package co.com.bancolombia.model.common;
 
-import co.com.bancolombia.model.ex.ValidationException;
+import co.com.bancolombia.model.ex.ValidationRuleException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,7 +23,7 @@ public class Validations {
 
     public static void required(final String value, final String fieldName) {
         if (value == null || value.isBlank()) {
-            throw new ValidationException(
+            throw new ValidationRuleException(
                     String.format("The Field '%s' is required", fieldName)
             );
         }
@@ -32,7 +32,7 @@ public class Validations {
     public static void lengthBetween(String field, int stringMinLength, int stringMaxLength, String fieldName) {
         required(field, fieldName);
         if (field.length() < stringMinLength || field.length() > stringMaxLength) {
-            throw new ValidationException(
+            throw new ValidationRuleException(
                     String.format("The Field '%s' must be between %d and %d characters", fieldName, stringMinLength, stringMaxLength)
             );
         }
@@ -40,30 +40,40 @@ public class Validations {
 
     public static void birthDate(final LocalDate birthDate) {
         if (birthDate == null) {
-            throw new ValidationException("The birth date can not be empty");
+            throw new ValidationRuleException("The birth date can not be empty");
         }
 
         if (birthDate.isAfter(LocalDate.now())) {
-            throw new ValidationException("The birth date can not be a future date");
+            throw new ValidationRuleException("The birth date can not be a future date");
         }
     }
 
     public static void email(final String email) {
         Validations.required(email, FIELD_EMAIL);
         if (!EMAIL_PATTERN.matcher(email).matches()) {
-            throw new ValidationException("The email is not valid");
+            throw new ValidationRuleException("The email is not valid");
         }
     }
 
     public static void phoneNumber(final String phoneNumber) {
         if(phoneNumber == null || !PHONE_NUMBER_PATTERN.matcher(phoneNumber).matches()){
-            throw new ValidationException("The phone number is not valid");
+            throw new ValidationRuleException("The phone number is not valid");
         }
     }
 
     public static void salary(final Double salary) {
-        if (salary == null || salary < MIN_SALARY.doubleValue() || salary.isNaN() || salary > MAX_SALARY ) {
-            throw new ValidationException("The salary must be greater than 0");
+        if (salary == null) {
+            throw new ValidationRuleException("The salary cannot be null");
+        }
+
+        if (salary.isNaN() || salary.isInfinite()) {
+            throw new ValidationRuleException("The salary must be a valid number");
+        }
+
+        if (salary < MIN_SALARY.doubleValue() || salary > MAX_SALARY) {
+            throw new ValidationRuleException(
+                    String.format("The salary must be between %.2f and %.2f",
+                            MIN_SALARY.doubleValue(), MAX_SALARY));
         }
     }
 }

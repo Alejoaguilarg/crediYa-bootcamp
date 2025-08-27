@@ -6,4 +6,5 @@ import reactor.core.publisher.Mono;
 public interface IUserRepository {
     Mono<User> saveUser(final User user);
     Mono<User> findById(final Long id);
+    Mono<User> findByEmail(final String email);
 }

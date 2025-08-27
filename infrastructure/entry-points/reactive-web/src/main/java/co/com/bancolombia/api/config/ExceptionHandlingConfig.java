@@ -1,0 +1,19 @@
+package co.com.bancolombia.api.config;
+
+import co.com.bancolombia.api.error.GlobalErrorAttributes;
+import co.com.bancolombia.api.error.GlobalErrorWebExceptionHandler;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.codec.ServerCodecConfigurer;
+
+@Configuration
+public class ExceptionHandlingConfig {
+
+    @Bean
+    public GlobalErrorWebExceptionHandler globalErrorHandler(final GlobalErrorAttributes errorAttributes,
+                                                             final ApplicationContext applicationContext,
+                                                             final ServerCodecConfigurer configurer) {
+        return new GlobalErrorWebExceptionHandler(errorAttributes, applicationContext, configurer);
+    }
+}
